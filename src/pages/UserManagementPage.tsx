@@ -252,19 +252,14 @@ export const UserManagementPage: React.FC = () => {
   // Tạo người dùng mới
   const handleSaveCreate = async (e: React.FormEvent) => {
     e.preventDefault();
+    setCreateLoading(true);
     setCreateError('');
 
-    if (formData.newPassword.trim().length < 6) {
-      setCreateError('Mật khẩu khởi tạo phải có ít nhất 6 ký tự.');
-      return;
-    }
-
-    setCreateLoading(true);
     try {
       await api.createUser({
         fullName: formData.fullName.trim(),
         email: formData.email.trim().toLowerCase(),
-        password: formData.newPassword,
+        password: formData.newPassword || '123456',
         role: formData.role,
         department: formData.department.trim() || undefined,
         phone: formData.phone.trim() || undefined,
@@ -1129,13 +1124,13 @@ export const UserManagementPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Mật khẩu khởi tạo *
+                  Mật khẩu khởi tạo
                 </label>
                 <input
                   type="password"
                   value={formData.newPassword}
                   onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                  placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+                  placeholder="Mặc định: 123456"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#005FAF]/20 focus:bg-white"
                 />
               </div>
